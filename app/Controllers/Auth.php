@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\UsersModel;
+
 class Auth extends BaseController
 {
     public function __construct()
@@ -13,7 +14,11 @@ class Auth extends BaseController
     }
     public function index()
     {
-        return view('V_login');
+        if (session()->get('name') == True) {
+            return view('V_login');
+        } else {
+            return redirect()->to('/Dashboard');
+        }
     }
     public function cek_login()
     {
@@ -32,28 +37,29 @@ class Auth extends BaseController
                 'errors' => [
                     'required' => '{field} must be insert !!',
                 ],
-            ]]);
-            if (!$validate) {
+            ]
+        ]);
+        if (!$validate) {
             return view('V_login', ['validation' => $this->validator]);
-        } 
-            // valid
-            $email = $this->request->getPost('email');
-            $password = $this->request->getPost('password');
-            $passwordx = md5($password);
-            $cek_login = $this->UsersModel->login_user($email, $passwordx);
-            if ($cek_login) {
-                session()->set('name', $cek_login['name']);
-                session()->set('email', $cek_login['email']);
-                session()->set('status', $cek_login['status']);
-                session()->set('user_id', $cek_login['user_id']);
+        }
+        // valid
+        $email = $this->request->getPost('email');
+        $password = $this->request->getPost('password');
+        $passwordx = md5($password);
+        $cek_login = $this->UsersModel->login_user($email, $passwordx);
+        if ($cek_login) {
+            session()->set('name', $cek_login['name']);
+            session()->set('email', $cek_login['email']);
+            session()->set('status', $cek_login['status']);
+            session()->set('user_id', $cek_login['user_id']);
 
-                return redirect()->to(base_url('/Dashboard'));
-            } else {
-                session()->setFlashdata('pesan', 'Email atau Password salah..!!!');
-                return redirect()->to(base_url('/'));
-            }
-        } 
-    
+            return redirect()->to(base_url('/Dashboard'));
+        } else {
+            session()->setFlashdata('pesan', 'Email atau Password salah..!!!');
+            return redirect()->to(base_url('/'));
+        }
+    }
+
     public function logout()
     {
         $session = session();

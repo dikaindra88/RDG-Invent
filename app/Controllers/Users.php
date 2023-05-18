@@ -16,19 +16,19 @@ class Users extends BaseController
     public function index()
     {
         if (session()->get('name') == True) {
-        $data = [
-            'title' => 'Page | Users',
-            'user' => $this->Users->getData()
-        ];
-        return view('admin/V_admin', $data);
-    }else{
-        return redirect()->to('/');
-    }
+            $data = [
+                'title' => 'Page | Users',
+                'user' => $this->Users->getData()
+            ];
+            return view('admin/V_admin', $data);
+        } else {
+            return redirect()->to('/');
+        }
     }
     public function insert()
     {
-$password = $this->request->getPost('password');
-$passx = md5($password);
+        $password = $this->request->getPost('password');
+        $passx = md5($password);
         $data = [
 
             'name' => $this->request->getPost('name'),
@@ -56,7 +56,7 @@ $passx = md5($password);
     public function EditAction($user_id)
     {
         $password = $this->request->getPost('password');
-$passx = md5($password);
+        $passx = md5($password);
         $data = [
             'user_id' => $user_id,
             'name' => $this->request->getPost('name'),

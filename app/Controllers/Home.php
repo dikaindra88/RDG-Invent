@@ -25,6 +25,9 @@ class Home extends BaseController
     //Page Login
     public function index()
     {
+        // if (session() == True) {
+        //     return redirect()->to('/Dashboard');
+        // } else {
         $data = [
             'title' => 'Page | Login',
             'subtitle' => 'Login Admin',
@@ -32,6 +35,7 @@ class Home extends BaseController
         ];
 
         return view('V_login', $data);
+        // }
     }
 
     //Page Dashboard
